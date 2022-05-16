@@ -13,9 +13,19 @@ go install github.com/swaggo/swag/cmd/swag@v1.7.0
 swag init --parseDependency --parseInternal --parseDepth 1 --md docs/md_endpoints
 ```
 
+
 ```shell
+go mod tidy
+
 go build -o /home/portainer/go-path/bin/api.dapp
 ```
 
 
 open the following url in the browser: http://192.168.49.133:7001/swagger/index.html
+
+
+copying the cryptomaterials if you are running the dapp on the host where the blockchain network runs
+```shell
+mkdir ~/dapp/crypmaterials/msp
+cp -R crypto-config/organizations/org1.example.com/users/*  ~/dapp/crypmaterials/msp/
+```
