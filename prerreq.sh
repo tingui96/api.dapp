@@ -4,8 +4,8 @@ echo "        ####################################################### "
 echo "        #                   cloning the rest api              # "
 echo "        ####################################################### "
 cd $HOME
-git clone https://github.com/ic-matcom/api-clientnode-evote-go.git
-cd $HOME/api-clientnode-evote-go
+git clone https://github.com/ic-matcom/api.dapp.git
+cd $HOME/api.dapp
 
 #GO
 echo "        ####################################################### "
@@ -27,14 +27,14 @@ source ~/.bash_profile
 cd $HOME
 mkdir dapp
 
-cp $HOME/api-clientnode-evote-go/conf.linux.yaml /home/portainer/dapp/
-cp $HOME/api-clientnode-evote-go/cpp.yaml /home/portainer/dapp/
+cp $HOME/api.dapp/conf.linux.yaml /home/portainer/dapp/
+cp $HOME/api.dapp/cpp.yaml /home/portainer/dapp/
 
 
 echo "        ####################################################### "
 echo "        #        generating RESTful API documentation         # "
 echo "        ####################################################### "
-cd $HOME/api-clientnode-evote-go
+cd $HOME/api.dapp
 swag init --parseDependency --parseInternal --parseDepth 1 --md docs/md_endpoints
 go mod tidy
 #go get

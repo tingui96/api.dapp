@@ -51,7 +51,7 @@ type SvcConfig struct {
 func NewSvcConfig() *SvcConfig {
 	c := conf{}
 
-	// var configPath = "/home/kmilo/Downloads/api.hlf.evote.dapp/conf.linux.yaml"
+	// var configPath = "/home/kmilo/Downloads/api.dapp/conf.linux.yaml"
 	// var jwtSignKey = "secrethatmaycontainch@r32lenght"
 
 	var configPath = os.Getenv(schema.EnvConfigPath)

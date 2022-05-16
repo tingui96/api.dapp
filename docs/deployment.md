@@ -94,10 +94,10 @@ go get
 Next to the steps #5 (bifurcation in the steps) we could install the app as 
 
 ```shell
-go build -i -o /home/portainer/go-path/bin/api.hlf.evote.dapp
+go build -i -o /home/portainer/go-path/bin/api.dapp
 ```
 That install the dapp in the indicated go path bin directory. Then we could run 
-the dapp with just ```./api.hlf.evote.dapp``` from the mentioned directory. 
+the dapp with just ```./api.dapp``` from the mentioned directory. 
 
 #### Alternative B
 Next to the steps #1 (bifurcation in the steps) we could build the binary using
@@ -106,7 +106,7 @@ with the Goland IDE help, using a build template as the picture below shows.
 
 ![Drag Racing](pic_00.jpeg)
 
-Then we could copy the file to the sever and run the dapp with just ```./api.hlf.evote.dapp```.
+Then we could copy the file to the sever and run the dapp with just ```./api.dapp```.
 
 ❗ Both alternative A and B have to run steps #4 and #5.   
 

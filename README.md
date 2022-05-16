@@ -1,13 +1,5 @@
 ```shell
-export HLF_DAPP_CONFIG="/home/user_session_here/Downloads/api.hlf.evote.dapp/conf.linux.yaml"
-export HLF_DAPP_JWT_SIGN_KEY="secrethatmaycontainch@r32lenght"
-export HLF_DAPP_SISEC_CLIENT_ID="id_str"
-export HLF_DAPP_SISEC_PW="the_password"
-```
-ex:
-
-```shell
-export HLF_DAPP_CONFIG="/home/user_session_here/Downloads/api.hlf.evote.dapp/conf.linux.yaml"
+export HLF_DAPP_CONFIG="/home/user_session_here/Downloads/api.dapp/conf.linux.yaml"
 export HLF_DAPP_JWT_SIGN_KEY="45567f001601aacb761e13987cddc62ddd49c5b2"
 ```
 

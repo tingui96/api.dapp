@@ -1,7 +1,6 @@
 package endpoints
 
 import (
-	"github.com/ic-matcom/api.dapp/lib"
 	"github.com/ic-matcom/api.dapp/repo/db"
 	"github.com/ic-matcom/api.dapp/repo/hlf"
 	"github.com/ic-matcom/api.dapp/schema"
@@ -58,50 +57,13 @@ func NewBlockchainTxsHandler(app *iris.Application, mdwAuthChecker *context.Hand
 
 		// identity contract
 		// we use the hero handler to inject the depObtainUserDid dependency. If we don't need to inject any dependencies we jus call guardTxsRouter.Get("/identity/identity/{id:string}", h.Identity_DevPopulate)
-
-		guardTxsRouter.Get("/evote/postmail/{username:string}", h.PostMail)
+		
 		guardTxsRouter.Post("/initledger", h.InitLedger)
 		guardTxsRouter.Get("/election/{id:string}", h.Election_Get)
 		guardTxsRouter.Post("/setelection", h.SetElection)
 	}
 
 	return h
-}
-
-// PostMail send mail
-// @Tags Txs.eVote
-// @Accept  json
-// @Produce json
-// @Param	username	path	string	true	"email address"	Format(string)
-// @Success 204 "OK"
-// @Failure 400 {object} dto.Problem "err.processing_param"
-// @Failure 502 {object} dto.Problem "err.bad_gateway"
-// @Failure 504 {object} dto.Problem "err.network"
-// @Router /txs/postmail/{username} [get]
-func (h HBlockchainTxs) PostMail(ctx iris.Context) {
-	// checking the param
-	username := ctx.Params().GetString("username")
-	if username == "" {
-		(*h.response).ResErr(&dto.Problem{Status: iris.StatusBadRequest, Title: schema.ErrProcParam, Detail: schema.ErrDetInvalidField}, &ctx)
-		return
-	}
-
-	user, problem := (*h.service).GetUserSvc(username)
-	if problem != nil {
-		(*h.response).ResErr(problem, &ctx)
-		return
-	} else if user.Username == "" || user.Clear == "" {
-		(*h.response).ResErr(&dto.Problem{Status: iris.StatusBadRequest, Title: schema.ErrProcParam, Detail: schema.ErrDetInvalidField}, &ctx)
-		return
-	}
-
-	err := lib.SendSingleMessage(username, "subject", user.Clear)
-	if err != nil {
-		(*h.response).ResErr(&dto.Problem{Status: iris.StatusInternalServerError, Title: schema.ErrEmailSending, Detail: schema.ErrEmailProc}, &ctx)
-		return
-	}
-
-	h.response.ResOK(&ctx)
 }
 
 // region ======== ENDPOINT HANDLERS DEV =================================================

@@ -8,9 +8,9 @@ TkMaxAge: 180
 
 # HLF Network & Crypto Materials
 MspId: "Org1MSP"
-CppPath: "D:\\Source\\Go\\src\\api.hlf.evote.dapp\\cpp.yaml"                        # cpp = connection profile
+CppPath: "D:\\Source\\Go\\src\\api.dapp\\cpp.yaml"                        # cpp = connection profile
 
 
-CryptoMaterialsDir: "D:\\Source\\Go\\src\\api.hlf.evote.dapp\\crypmaterials"
+CryptoMaterialsDir: "D:\\Source\\Go\\src\\api.dapp\\crypmaterials"
 DappIdentityUser: "User1@org1.example.com"                                    # dapp user identity to authenticate normal dapp ops in the HLF network
 DappIdentityAdmin: "Admin@org1.example.com"                                   # dapp admin identity to authenticate admin dapp ops in the HLF network

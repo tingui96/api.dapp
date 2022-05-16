@@ -36,7 +36,7 @@ func NewAuthHandler(app *iris.Application, MdwAuthChecker *context.Handler, svcR
 	// --- VARS SETUP ---
 	h := HAuth{svcR, svcC, make(map[string]bool)}
 	// filling providers
-	h.providers["evote"] = true
+	h.providers["default"] = true
 	// h.providers["another_provider"] = true
 	// h.providers["another_provider"] = true
 

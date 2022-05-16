@@ -15,7 +15,7 @@ func ToAccessTokenDataV(obj *dto.GrantIntentResponse) *dto.AccessTokenData {
 	// claims := dto.Claims{ Sub: obj.Identifier, Rol: "undefined" }
 	claims := dto.InjectedParam{ Did: obj.DID, Username: obj.Identifier }
 
-	return &dto.AccessTokenData{ Scope: strings.Fields("api.hlf.evote.dapp"), Claims: claims }
+	return &dto.AccessTokenData{ Scope: strings.Fields("api.dapp"), Claims: claims }
 }
 
 // endregion =============================================================================
