@@ -1,8 +1,9 @@
 package ccfuncnames
 
 const (
-	CC1InitLedger       = "InitLedger"
-	CC2ReadAsset        = "ReadAsset"
+	CC1InitLedger  = "InitLedger"
+	CC1ReadAsset   = "ReadAsset"
+	CC1CreateAsset = "CreateAsset"
 )
 
 const (
