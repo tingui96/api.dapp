@@ -14,7 +14,7 @@ swag init --parseDependency --parseInternal --parseDepth 1 --md docs/md_endpoint
 ```
 
 ```shell
-go build -o /home/portainer/go-path/bin/api.hlf.dapp
+go build -o /home/portainer/go-path/bin/api.dapp
 ```
 
 

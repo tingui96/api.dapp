@@ -44,4 +44,4 @@ echo "        ####################################################### "
 echo "        #        building the solution                        # "
 echo "        ####################################################### "
 
-go build -o $HOME/go-workspace/bin/api.hlf.dapp
+go build -o $HOME/go-workspace/bin/api.dapp

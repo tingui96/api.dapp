@@ -54,15 +54,15 @@ The first line is for the inclusion of a private github repo
 
 ❗ These steps should be done in the server that will serve the application
 
-0. Copy [crypto-materials](https://github.com/ic-matcom/api.hlf.dapp/blob/main/docs/deployment.md#crypto-materials) 
-   folder, the [configuration file](https://github.com/ic-matcom/api.hlf.dapp/blob/main/docs/deployment.md#configuration-file) 
+0. Copy [crypto-materials](https://github.com/ic-matcom/api.dapp/blob/main/docs/deployment.md#crypto-materials) 
+   folder, the [configuration file](https://github.com/ic-matcom/api.dapp/blob/main/docs/deployment.md#configuration-file) 
    and the HLF connection profile (cpp) to the server.
 1. Make sure all the env var were set up properly
 2. Create a folder to serve the Dapp API, and run the following command inside:
    
 ```shell 
-git clone  https://github.com/ic-matcom/api.hlf.dapp.git
-cd api.hlf.dapp.git
+git clone  https://github.com/ic-matcom/api.dapp.git
+cd api.dapp.git
 ```                
 
 3. Install Swagger api documentation running this command:
