@@ -3,7 +3,6 @@ package hlf
 import (
 	"errors"
 	"github.com/ic-matcom/api.dapp/schema/ccFuncNames"
-	jsoniter "github.com/json-iterator/go"
 	"path/filepath"
 
 	"github.com/ic-matcom/api.dapp/schema"
@@ -77,8 +76,8 @@ func (r *repoBlockchain) Get(ID string) ([]byte, error) {
 	}
 	defer gw.Close()
 
-	strArgs, _ := jsoniter.Marshal(ID)
-	res, e := contract.EvaluateTransaction(ccfuncnames.CC1ReadAsset, string(strArgs))
+	//strArgs, _ := jsoniter.Marshal(ID)
+	res, e := contract.EvaluateTransaction(ccfuncnames.CC1ReadAsset, string(ID))
 	//res, e := contract.SubmitTransaction(ccfuncnames.CC1ReadAsset, string(strArgs))
 	if e != nil {
 		return nil, e
