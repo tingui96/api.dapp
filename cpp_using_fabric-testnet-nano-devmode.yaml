@@ -20,7 +20,7 @@ organizations:
 peers:
   peer0.org1.example.com:
     url: grpc://127.0.0.1:7051
-    #    url: grpc://peer0.org1.example.com:7051
+#    url: grpc://peer0.org1.example.com:7051
     tlsCACerts:
       path: /home/portainer/fabric-samples/fabric-testnet-nano-devmode/crypto-config/organizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
     grpcOptions:
@@ -39,9 +39,9 @@ channels:
 orderers:
   orderer.example.com:
     url: grpc://127.0.0.1:7050
-    #    url: grpc://orderer.example.com:7050
+#    url: grpc://orderer.example.com:7050
     grpcOptions:
-      #      ssl-target-name-override: orderer.example.com
+#      ssl-target-name-override: orderer.example.com
       grpc-max-send-message-length: 50000000
     tlsCACerts:
       path: /home/portainer/fabric-samples/fabric-testnet-nano-devmode/crypto-config/organizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
