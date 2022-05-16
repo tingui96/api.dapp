@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/ic-matcom/api.dapp/api/endpoints"
 	"github.com/ic-matcom/api.dapp/api/middlewares"
