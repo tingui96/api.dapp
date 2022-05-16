@@ -6,5 +6,5 @@ const (
 )
 
 const (
-	ContractNameCC1 = "basic"
+	ContractNameCC1 = "mycc"
 )
