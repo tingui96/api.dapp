@@ -23,7 +23,7 @@ vendor/*
 lib/oldLoginSchema.json
 
 # Crypto material folders
-/crypmaterials/*/*
+#/crypmaterials/*/*
 !/crypmaterials/msp/readme.md
 !/crypmaterials/wallet/readme.md
 
@@ -38,4 +38,3 @@ lib/oldLoginSchema.json
 /docs/docs.go
 /letscache
 /.run/Template Go Build.run.xml
-/api.dapp
