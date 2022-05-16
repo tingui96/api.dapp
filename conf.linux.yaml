@@ -1,0 +1,17 @@
+# ENVIRONMENT
+Debug: true
+ApiDocIp: 192.168.49.133                                           # Ip to expose the swagger api documentation
+DappPort: 7001                                                     # The port this dapp will be running on
+
+# Cryptographic configuration
+TkMaxAge: 180
+
+# HLF Network & Crypto Materials
+MspId : "Org1MSP"
+CppPath: "/home/portainer/dapp/cpp.yaml"              # cpp = connection profile
+
+
+CryptoMaterialsDir: "/home/portainer/dapp/crypmaterials"
+DappIdentityUser: "User1@org1.example.com"                          # dapp user identity to authenticate normal dapp ops in the HLF network
+DappIdentityAdmin: "Admin@org1.example.com"                         # dapp admin identity to authenticate admin dapp ops in the HLF network
+

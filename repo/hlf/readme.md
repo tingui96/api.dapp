@@ -1,0 +1,1 @@
+> Hyperledger Fabric entities / assets actions abstraction layer
