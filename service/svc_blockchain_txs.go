@@ -81,11 +81,11 @@ func (s *svcBlockchainTxs) GetAssetSvc(ID string) (interface{}, *dto.Problem) {
 	if err != nil {
 		return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrBuntdb, err.Error())
 	}
+
 	result := lib.DecodePayload(item)
 
-	m, ok := result.([]interface{})
+	m, ok := result.(interface{})
 	if !ok {return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrDecodePayloadTx, err.Error())}
-	if len(m) > 0 {return m[0], nil}
 
-	return dto.TestRequest{}, nil
+	return m, nil
 }

@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"fmt"
 	"github.com/ic-matcom/api.dapp/repo/db"
 	"github.com/ic-matcom/api.dapp/repo/hlf"
 	"github.com/ic-matcom/api.dapp/schema"
@@ -109,7 +110,7 @@ func (h HBlockchainTxs) Asset_Set(ctx iris.Context) {
 // @Produce json
 // @Param	Authorization	header	string	true 	"Insert access token" default(Bearer <Add access token here>)
 // @Param	id				path	string	true	"ID"	Format(string)
-// @Success 200 {object} []dto.TestRequest "OK"
+// @Success 200 {object} byte "OK"
 // @Failure 401 {object} dto.Problem "err.unauthorized"
 // @Failure 400 {object} dto.Problem "err.processing_param"
 // @Failure 502 {object} dto.Problem "err.bad_gateway"
@@ -128,6 +129,7 @@ func (h HBlockchainTxs) Asset_Get(ctx iris.Context) {
 		(*h.response).ResErr(problem, &ctx)
 		return
 	}
+	fmt.Println("--> 1", result)
 
 	(*h.response).ResOKWithData(result, &ctx)
 }
