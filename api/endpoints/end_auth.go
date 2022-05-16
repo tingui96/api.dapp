@@ -43,7 +43,7 @@ func NewAuthHandler(app *iris.Application, MdwAuthChecker *context.Handler, svcR
 	repoHlfIdentity := hlf.NewRepoIdentity(svcC)
 	repoUsers := db.NewRepoUsers(svcC)
 
-	svcIdentity := service.NewSvcHlfIdentity(&repoHlfIdentity, &repoUsers, svcC) // instantiating HLF identity Service
+	svcIdentity := service.NewSvcHlfIdentity(&repoHlfIdentity, &repoUsers) // instantiating HLF identity Service
 	svcAuth := auth.NewSvcAuthentication(h.providers, svcC, &repoUsers)          // instantiating authentication Service
 
 	// registering unprotected router

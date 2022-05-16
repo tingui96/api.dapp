@@ -15,7 +15,8 @@ import (
 type ISvcBlockchainTxs interface {
 	SrvInitLedger() ([]byte, *dto.Problem)
 	GetUserSvc(id string) (*dto.User, *dto.Problem)
-	GetBallotSvc(id string) (interface{}, *dto.Problem)
+	GetAssetSvc(id string) (interface{}, *dto.Problem)
+	//SetAssetSvc
 }
 
 type svcBlockchainTxs struct {
@@ -75,12 +76,8 @@ func (s *svcBlockchainTxs) GetUserSvc(id string)  (*dto.User, *dto.Problem) {
 	return res, nil
 }
 
-func (s *svcBlockchainTxs) GetBallotSvc(id string) (interface{}, *dto.Problem) {
-	r := dto.GetRequest{
-		ID:         "ID1",
-		ElectionID: "EID1",
-	}
-	item, err := (*s.repo).Get(r)
+func (s *svcBlockchainTxs) GetAssetSvc(ID string) (interface{}, *dto.Problem) {
+	item, err := (*s.repo).Get(ID)
 	if err != nil {
 		return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrBuntdb, err.Error())
 	}
@@ -90,5 +87,5 @@ func (s *svcBlockchainTxs) GetBallotSvc(id string) (interface{}, *dto.Problem) {
 	if !ok {return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrDecodePayloadTx, err.Error())}
 	if len(m) > 0 {return m[0], nil}
 
-	return dto.ElectionRequest{}, nil
+	return dto.TestRequest{}, nil
 }

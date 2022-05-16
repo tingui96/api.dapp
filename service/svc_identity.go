@@ -4,8 +4,6 @@ import (
 	"github.com/ic-matcom/api.dapp/repo/db"
 	"github.com/ic-matcom/api.dapp/repo/hlf"
 	"github.com/ic-matcom/api.dapp/schema/dto"
-	"github.com/ic-matcom/api.dapp/service/utils"
-	"path/filepath"
 )
 
 // region ======== SETUP =================================================================
@@ -18,44 +16,16 @@ type ISvcHlfIdentity interface {
 type SvcHlfIdentity struct {
 	repoI *hlf.RepoHlfIdentity
 	repoU *db.RepoUsers
-
-	orgPath string
-	orgSpec dto.OrgSpec
-
-	userPath  string
-	caDir     string
-	tlscaPath string
 }
 
 // endregion =============================================================================
 
 // NewSvcHlfIdentity
-func NewSvcHlfIdentity(pRepoI *hlf.RepoHlfIdentity, pRepoU *db.RepoUsers, conf *utils.SvcConfig) *SvcHlfIdentity { // filling the organization specification struct
-
-	// filling important paths
-	usersDir := filepath.Join(conf.OrgPath, conf.OrgDomain, "users")
-	caDir := filepath.Join(conf.OrgPath, conf.OrgDomain, "ca")
-	tlscaPath := filepath.Join(conf.OrgPath, conf.OrgDomain, "tlsca")
-
-	// filling organization specification
-	org := dto.OrgSpec {
-		Name:          conf.OrgName,
-		Domain:        conf.OrgDomain,
-		EnableNodeOUs: true,
-		CA:            dto.NodeSpec{CommonName: conf.CACommonName},
-		Template:      dto.NodeTemplate{},
-		Specs:         nil,
-		Users:         dto.UsersSpec{Count: 0}, // we need to update it later
-	}
+func NewSvcHlfIdentity(pRepoI *hlf.RepoHlfIdentity, pRepoU *db.RepoUsers) *SvcHlfIdentity { // filling the organization specification struct
 
 	return &SvcHlfIdentity {
 		pRepoI,
 		pRepoU,
-		conf.OrgPath,
-		org,
-		usersDir,
-		caDir,
-		tlscaPath,
 	}
 }
 

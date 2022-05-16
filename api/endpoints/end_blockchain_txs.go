@@ -59,8 +59,8 @@ func NewBlockchainTxsHandler(app *iris.Application, mdwAuthChecker *context.Hand
 		// we use the hero handler to inject the depObtainUserDid dependency. If we don't need to inject any dependencies we jus call guardTxsRouter.Get("/identity/identity/{id:string}", h.Identity_DevPopulate)
 		
 		guardTxsRouter.Post("/initledger", h.InitLedger)
-		guardTxsRouter.Get("/election/{id:string}", h.Election_Get)
-		guardTxsRouter.Post("/setelection", h.SetElection)
+		guardTxsRouter.Get("/optativo/{id:string}", h.Asset_Get)
+		guardTxsRouter.Post("/optativo/set", h.Asset_Set)
 	}
 
 	return h
@@ -68,30 +68,30 @@ func NewBlockchainTxsHandler(app *iris.Application, mdwAuthChecker *context.Hand
 
 // region ======== ENDPOINT HANDLERS DEV =================================================
 
-// SetElection
+// Asset_Set
 // @description.markdown SetElection_Request
 // @Tags Txs.eVote
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce json
 // @Param	Authorization	header	string 			        true 	"Insert access token" default(Bearer <Add access token here>)
-// @Param	tx				body	dto.ElectionRequest		true	"Election data"
-// @Success 200 {object} []dto.ElectionRequest "OK"
+// @Param	tx				body	dto.TestRequest		true	"Test data"
+// @Success 200 {object} []dto.TestRequest "OK"
 // @Failure 401 {object} dto.Problem "err.unauthorized"
 // @Failure 400 {object} dto.Problem "err.processing_param"
 // @Failure 502 {object} dto.Problem "err.bad_gateway"
 // @Failure 504 {object} dto.Problem "err.network"
-// @Router /txs/setelection [post]
-func (h HBlockchainTxs) SetElection(ctx iris.Context) {
-	var election dto.ElectionRequest
+// @Router /txs/optativo/set [post]
+func (h HBlockchainTxs) Asset_Set(ctx iris.Context) {
+	var request dto.TestRequest
 
 	// unmarshalling the json and check
-	if err := ctx.ReadJSON(&election); err != nil {
+	if err := ctx.ReadJSON(&request); err != nil {
 		(*h.response).ResErr(&dto.Problem{Status: iris.StatusBadRequest, Title: schema.ErrProcParam, Detail: err.Error()}, &ctx)
 		return
 	}
 
-	//res, problem := (*h.service).SetElectionSvc(election)
+	//res, problem := (*h.service).SetAssetSvc(request)
 	//if problem != nil {
 	//	(*h.response).ResErr(problem, &ctx)
 	//	return
@@ -100,22 +100,22 @@ func (h HBlockchainTxs) SetElection(ctx iris.Context) {
 	(*h.response).ResOKWithData("res", &ctx)
 }
 
-// Election_Get Get elections from the blockchain ledger. Contracts: suffrage
-// @Summary Get elections from the blockchain ledger.
-// @Description Get elections from the blockchain ledger.
+// Asset_Get Get asset from the blockchain ledger. Contracts: mycc
+// @Summary Get asset from the blockchain ledger.
+// @Description Get asset from the blockchain ledger.
 // @Tags Txs.eVote
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce json
 // @Param	Authorization	header	string	true 	"Insert access token" default(Bearer <Add access token here>)
 // @Param	id				path	string	true	"ID"	Format(string)
-// @Success 200 {object} []dto.ElectionRequest "OK"
+// @Success 200 {object} []dto.TestRequest "OK"
 // @Failure 401 {object} dto.Problem "err.unauthorized"
 // @Failure 400 {object} dto.Problem "err.processing_param"
 // @Failure 502 {object} dto.Problem "err.bad_gateway"
 // @Failure 504 {object} dto.Problem "err.network"
-// @Router /txs/election/{id} [get]
-func (h HBlockchainTxs) Election_Get(ctx iris.Context) {
+// @Router /txs/optativo/{id} [get]
+func (h HBlockchainTxs) Asset_Get(ctx iris.Context) {
 	// checking the param
 	id := ctx.Params().GetString("id")
 	if id == "" {
@@ -123,13 +123,13 @@ func (h HBlockchainTxs) Election_Get(ctx iris.Context) {
 		return
 	}
 
-	election, problem := (*h.service).GetBallotSvc(id)
+	result, problem := (*h.service).GetAssetSvc(id)
 	if problem != nil {
 		(*h.response).ResErr(problem, &ctx)
 		return
 	}
 
-	(*h.response).ResOKWithData(election, &ctx)
+	(*h.response).ResOKWithData(result, &ctx)
 }
 
 // endregion =============================================================================
