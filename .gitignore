@@ -38,3 +38,4 @@ lib/oldLoginSchema.json
 /docs/docs.go
 /letscache
 /.run/Template Go Build.run.xml
+/api.dapp
