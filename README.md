@@ -24,8 +24,8 @@ go build -o /home/portainer/go-path/bin/api.dapp
 open the following url in the browser: http://192.168.49.133:7001/swagger/index.html
 
 
-copying the cryptomaterials if you are running the dapp on the host where the blockchain network runs
+copying the cryptomaterials
 ```shell
 mkdir ~/dapp/crypmaterials/msp
-cp -R crypto-config/organizations/org1.example.com/users/*  ~/dapp/crypmaterials/msp/
+cp -R ./crypmaterials/msp/*  ~/dapp/crypmaterials/msp/
 ```
