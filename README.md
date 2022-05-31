@@ -1,3 +1,5 @@
+Esta DApp esta configurada con los criptomateriales de la red `https://github.com/ic-matcom/test-network-optativo-nanobash`, recomendada para la tarea final.
+
 ```shell
 # exportamos las variables de entorno (HLF_DAPP_CONFIG y HLF_DAPP_JWT_SIGN_KEY)
 export HLF_DAPP_CONFIG="/home/user_session_here/Downloads/api.dapp/conf.linux.yaml"
