@@ -13,8 +13,6 @@ TkMaxAge: 180
 MspId : "Org1MSP"
 CppPath: "./cpp_con_una_unica_org.yaml"              # cpp = connection profile
 
-
-#CryptoMaterialsDir: "/home/portainer/dapp/crypmaterials"
 CryptoMaterialsDir: "./crypmaterials"
 DappIdentityUser: "User1@org1.example.com"                          # dapp user identity to authenticate normal dapp ops in the HLF network
 DappIdentityAdmin: "Admin@org1.example.com"                         # dapp admin identity to authenticate admin dapp ops in the HLF network

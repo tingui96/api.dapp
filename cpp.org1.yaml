@@ -20,6 +20,8 @@ organizations:
     mspid: Org2MSP
     peers:
       - peer0.org2.example.com
+    orderers:
+      - orderer.example.com
 
 peers:
   peer0.org1.example.com:
