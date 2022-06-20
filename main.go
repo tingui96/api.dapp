@@ -29,9 +29,6 @@ import (
 
 // TIPS This Ip here 👇🏽  must be change when compiling to deploy, can't figure out how to do it dynamically with Iris.
 
-
-
-// @host 127.0.0.1:7001
 // @BasePath /
 func main() {
 	// region ======== GLOBALS ===============================================================
