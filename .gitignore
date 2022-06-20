@@ -22,10 +22,10 @@ vendor/*
 # Configuration files
 lib/oldLoginSchema.json
 
-# Crypto material folders
-/crypmaterials/*/*
-!/crypmaterials/msp/readme.md
-!/crypmaterials/wallet/readme.md
+## Crypto material folders
+#/crypmaterials/*/*
+#!/crypmaterials/msp/readme.md
+#!/crypmaterials/wallet/readme.md
 
 # release files
 /builds/*

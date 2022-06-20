@@ -51,15 +51,13 @@ type SvcConfig struct {
 func NewSvcConfig() *SvcConfig {
 	c := conf{}
 
-	// var configPath = "/home/kmilo/Downloads/api.dapp/conf.linux.yaml"
-	// var jwtSignKey = "secrethatmaycontainch@r32lenght"
-
 	var configPath = os.Getenv(schema.EnvConfigPath)
-	var jwtSignKey = os.Getenv(schema.EnvJWTSignKey)
+	// var jwtSignKey = os.Getenv(schema.EnvJWTSignKey)
+	var jwtSignKey = "45567f001601aacb761e13987cddc62ddd49c5b2"
 
-	if configPath == "" || jwtSignKey == "" {
+	if configPath == "" {
 		log.Println("HLF_DAPP_CONFIG: ", configPath)
-		log.Println("HLF_DAPP_JWT_SIGN_KEY: ", jwtSignKey)
+		// log.Println("HLF_DAPP_JWT_SIGN_KEY: ", jwtSignKey)
 		panic(schema.ErrInvalidEnvVar)
 	}
 

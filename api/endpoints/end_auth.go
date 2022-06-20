@@ -18,7 +18,7 @@ import (
 type HAuth struct {
 	response  *utils.SvcResponse
 	appConf   *utils.SvcConfig
-	providers map[string]bool
+	//providers map[string]bool
 }
 
 // NewAuthHandler create and register the authentication handlers for the App. For the moment, all the
@@ -34,17 +34,17 @@ type HAuth struct {
 func NewAuthHandler(app *iris.Application, MdwAuthChecker *context.Handler, svcR *utils.SvcResponse, svcC *utils.SvcConfig) HAuth {
 
 	// --- VARS SETUP ---
-	h := HAuth{svcR, svcC, make(map[string]bool)}
+	h := HAuth{svcR, svcC} //, make(map[string]bool)}
 	// filling providers
-	h.providers["default"] = true
-	// h.providers["another_provider"] = true
+	// h.providers["default"] = true
 	// h.providers["another_provider"] = true
 
 	repoHlfIdentity := hlf.NewRepoIdentity(svcC)
 	repoUsers := db.NewRepoUsers(svcC)
 
+
 	svcIdentity := service.NewSvcHlfIdentity(&repoHlfIdentity, &repoUsers) // instantiating HLF identity Service
-	svcAuth := auth.NewSvcAuthentication(h.providers, svcC, &repoUsers)          // instantiating authentication Service
+	svcAuth := auth.NewSvcAuthentication(svcC, &repoUsers)          // instantiating authentication Service
 
 	// registering unprotected router
 	authRouter := app.Party("/auth") // authorize
@@ -55,9 +55,9 @@ func NewAuthHandler(app *iris.Application, MdwAuthChecker *context.Handler, svcR
 		hero.Register(depObtainUserCred)
 		hero.Register(svcAuth) // as an alternative, we can put this dependencies as property in the HAuth struct, as we are doing in the rest of the endpoints / handlers
 
+
 		// --- REGISTERING ENDPOINTS ---
-		// authRouter.Post("/<provider>")										// provider is the auth provider to be used.
-		authRouter.Post("/{provider}", hero.Handler(h.authIntent)) // using a provider named 'sisec', also injecting dependencies
+		authRouter.Post("/", hero.Handler(h.authIntent))
 	}
 
 	// registering protected router
@@ -75,10 +75,7 @@ func NewAuthHandler(app *iris.Application, MdwAuthChecker *context.Handler, svcR
 		guardAuthRouter.Get("/logout", h.logout)
 		guardAuthRouter.Get("/user", hero.Handler(h.userGet))
 
-		guardAuthRouter.Get("/identity/dapp", hero.Handler(h.mkDappIdentity))
-		guardAuthRouter.Get("/identity/admin", hero.Handler(h.mkDappAdminIdentity))
-
-		//guardAuthRouter.Post("/gencerts", hero.Handler(h.GenUsersCerts))
+		// guardAuthRouter.Post("/gencerts", hero.Handler(h.GenUsersCerts))
 	}
 
 	return h
@@ -86,30 +83,24 @@ func NewAuthHandler(app *iris.Application, MdwAuthChecker *context.Handler, svcR
 
 // region ======== ENDPOINT HANDLERS =====================================================
 
-// authIntent Intent to grant authentication using the provider user's credentials and the specified  auth provider
-// @Summary Auth the user credential through a provider
-// @Description Intent to grant authentication using the provider user's credentials and the specified  auth provider
+// authIntent Intent to grant authentication using the provider user's credentials
+// @Summary Auth the user
+// @Description Intent to grant authentication using the provider user's credentials
 // @Tags Auth
 // @Accept multipart/form-data
 // @Produce json
-// @Param	provider	path	string			true	"Auth provider identifier"
 // @Param 	credential 	body 	dto.UserCredIn 	true	"User Login Credential"
 // @Success 200 "OK"
 // @Failure 401 {object} dto.Problem "err.unauthorized"
 // @Failure 400 {object} dto.Problem "err.wrong_auth_provider"
 // @Failure 504 {object} dto.Problem "err.network"
 // @Failure 500 {object} dto.Problem "err.json_parse"
-// @Router /auth/{provider} [post]
+// @Router /auth [post]
 func (h HAuth) authIntent(ctx iris.Context, uCred *dto.UserCredIn, svcAuth *auth.SvcAuthentication) {
 
-	provider := ctx.Params().Get("provider")
-	v, _ := h.providers[provider] // v, ok := map[key]
-	if !v {
-		(*h.response).ResErr(&dto.Problem{Status: iris.StatusBadRequest, Title: schema.ErrWrongAuthProvider, Detail: schema.ErrDetInvalidProvider}, &ctx)
-		return
-	}
+	provider := "default"
 
-	authGrantedData, problem := svcAuth.AuthProviders[provider].GrantIntent(uCred, nil) // requesting authorization to evote (provider) mechanisms in this case
+	authGrantedData, problem := svcAuth.AuthProviders[provider].GrantIntent(uCred, nil) // requesting authorization to (provider) mechanisms in this case
 	if problem != nil {                                                                 // check for errors
 		(*h.response).ResErr(problem, &ctx)
 		return
@@ -150,81 +141,9 @@ func (h HAuth) logout(ctx iris.Context) {
 	(*h.response).ResOK(&ctx)
 }
 
-// mkDappIdentity create a default user dapp identity wallet from an existing HLF identity
-// @Summary create a default user dapp identity wallet from an existing HLF identity
-// @Description Import and existing HLF identity to be used as dapp wallet identity through SDK.
-// By the moment, the crypto materials (.pem / cert)  used as input for wallet creation are fixed in filesystem.
-// Ideally this and the clients identities should be generated from crypto materials generated from dynamic request
-// to a CA. This 'user identity' authenticate the dapp operations in the HLF network with admin privilege level.
-// This identity is for the dapp authentication in teh HLF network, not dapp users.
-// @Security ApiKeyAuth
-// @Param Authorization header string true "Insert access token" default(Bearer <Add access token here>)
-// @Tags Auth
-// @Produce json
-// @Success 201 "Identity Created"
-// @Failure 401 {object} dto.Problem "err.unauthorized"
-// @Failure 500 {object} dto.Problem "err.crypt_material_processing"
-// @Router /auth/identity/dapp [get]
-func (h HAuth) mkDappIdentity(ctx iris.Context, svc *service.SvcHlfIdentity) {
-
-	problem := svc.MkDappIdentity(false)
-	if problem != nil {
-		(*h.response).ResErr(problem, &ctx)
-		return
-	}
-
-	(*h.response).ResCreated(&ctx)
-}
-
-// mkDappAdminIdentity create admin dapp identity wallet from an existing HLF identity
-// @Summary create admin dapp identity wallet from an existing HLF identity
-// @Description Import and existing HLF identity to be used as dapp wallet identity through SDK.
-// By the moment, the crypto materials (.pem / cert)  used as input for wallet creation are fixed in filesystem.
-// Ideally this and the clients identities should be generated from crypto materials generated from dynamic request
-// to a CA. This 'admin user identity' authenticate the dapp operations in the HLF network with admin privilege level.
-// This identity is for the dapp authentication in teh HLF network, not dapp users.
-// @Security ApiKeyAuth
-// @Param Authorization header string true "Insert access token" default(Bearer <Add access token here>)
-// @Tags Auth
-// @Produce json
-// @Success 201 "Identity Created"
-// @Failure 401 {object} dto.Problem "err.unauthorized"
-// @Failure 500 {object} dto.Problem "err.crypt_material_processing"
-// @Router /auth/identity/admin [get]
-func (h HAuth) mkDappAdminIdentity(ctx iris.Context, svc *service.SvcHlfIdentity) {
-
-	problem := svc.MkDappIdentity(true)
-	if problem != nil {
-		(*h.response).ResErr(problem, &ctx)
-		return
-	}
-
-	(*h.response).ResCreated(&ctx)
-}
-
-// GenUsersCerts Creates users certificates for authentication purpose against the blockchain. These custom x509 certificate will be generated using a specific HLF CA.
-// @Summary create the users x509 certificate
-// @Description Creates users certificates for authentication purpose against the blockchain. These custom x509 certificate will be generated using a specific HLF CA.
-// @Security ApiKeyAuth
-// @Param Authorization header string true "Insert access token" default(Bearer <Add access token here>)
-// @Tags Auth
-// @Success 201 "Certificates created"
-// @Failure 401 {object} dto.Problem "err.unauthorized"
-// @Failure 500 {object} dto.Problem "err.crypt_material_processing"
-// @Router /auth/gencerts [post]
-//func (h HAuth) GenUsersCerts (ctx iris.Context, svc *service.SvcHlfIdentity)  {
-//
-//	problem := svc.GenUsersCerts()
-//
-//	if problem != nil {
-//		(*h.response).ResErr(problem, &ctx)
-//		return
-//	}
-//
-//	(*h.response).ResCreated(&ctx)
-//}
-
 // userGet Get user from the BD.
+// @Summary Retorna el usuario autenticado
+// @Description Retorna informacion del usuario autenticado en el sistema
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Insert access token" default(Bearer <Add access token here>)
 // @Tags Auth

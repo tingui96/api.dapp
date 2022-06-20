@@ -1,7 +1,6 @@
 package endpoints
 
 import (
-	"fmt"
 	"github.com/ic-matcom/api.dapp/repo/db"
 	"github.com/ic-matcom/api.dapp/repo/hlf"
 	"github.com/ic-matcom/api.dapp/schema"
@@ -59,8 +58,8 @@ func NewBlockchainTxsHandler(app *iris.Application, mdwAuthChecker *context.Hand
 		// identity contract
 		// we use the hero handler to inject the depObtainUserDid dependency. If we don't need to inject any dependencies we jus call guardTxsRouter.Get("/identity/identity/{id:string}", h.Identity_DevPopulate)
 		
-		guardTxsRouter.Post("/initledger", h.InitLedger)
-		guardTxsRouter.Get("/optativo/{id:string}", h.Asset_Get)
+		guardTxsRouter.Post("/init_ledger", h.InitLedger)
+		guardTxsRouter.Get("/read_asset/{id:string}", h.ReadAsset_Get)
 		guardTxsRouter.Post("/optativo/set", h.Asset_Set)
 	}
 
@@ -70,8 +69,7 @@ func NewBlockchainTxsHandler(app *iris.Application, mdwAuthChecker *context.Hand
 // region ======== ENDPOINT HANDLERS DEV =================================================
 
 // Asset_Set
-// @description.markdown SetElection_Request
-// @Tags Txs.eVote
+// @Tags Txs.mycc
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce json
@@ -101,10 +99,10 @@ func (h HBlockchainTxs) Asset_Set(ctx iris.Context) {
 	(*h.response).ResOKWithData("res", &ctx)
 }
 
-// Asset_Get Get asset from the blockchain ledger. Contracts: mycc
+// ReadAsset_Get Get asset from the blockchain ledger. Contracts: mycc
 // @Summary Get asset from the blockchain ledger.
-// @Description Get asset from the blockchain ledger.
-// @Tags Txs.eVote
+// @description.markdown ReadAsset_Request
+// @Tags Txs.mycc
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce json
@@ -115,8 +113,8 @@ func (h HBlockchainTxs) Asset_Set(ctx iris.Context) {
 // @Failure 400 {object} dto.Problem "err.processing_param"
 // @Failure 502 {object} dto.Problem "err.bad_gateway"
 // @Failure 504 {object} dto.Problem "err.network"
-// @Router /txs/optativo/{id} [get]
-func (h HBlockchainTxs) Asset_Get(ctx iris.Context) {
+// @Router /txs/read_asset/{id} [get]
+func (h HBlockchainTxs) ReadAsset_Get(ctx iris.Context) {
 	// checking the param
 	id := ctx.Params().GetString("id")
 	if id == "" {
@@ -124,12 +122,11 @@ func (h HBlockchainTxs) Asset_Get(ctx iris.Context) {
 		return
 	}
 
-	result, problem := (*h.service).GetAssetSvc(id)
+	result, problem := (*h.service).ReadAssetSvc(id)
 	if problem != nil {
 		(*h.response).ResErr(problem, &ctx)
 		return
 	}
-	fmt.Println("--> 1", result)
 
 	(*h.response).ResOKWithData(result, &ctx)
 }
@@ -141,7 +138,7 @@ func (h HBlockchainTxs) Asset_Get(ctx iris.Context) {
 // InitLedger populate the ledger with first data
 // @Summary populate the ledger with first data
 // @Description populate the ledger with first data
-// @Tags Txs.eVote
+// @Tags Txs.mycc
 // @Security ApiKeyAuth
 // @Accept  json
 // @Produce json
@@ -150,7 +147,7 @@ func (h HBlockchainTxs) Asset_Get(ctx iris.Context) {
 // @Failure 401 {object} dto.Problem "err.unauthorized"
 // @Failure 502 {object} dto.Problem "err.bad_gateway"
 // @Failure 504 {object} dto.Problem "err.network"
-// @Router /txs/initledger [post]
+// @Router /txs/init_ledger [post]
 func (h HBlockchainTxs) InitLedger(ctx iris.Context) {
 
 	bcRes, problem := (*h.service).SrvInitLedger()

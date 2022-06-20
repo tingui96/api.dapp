@@ -20,15 +20,16 @@ echo "        ####################################################### "
 echo "        #                   ENVIRONMENT                       # "
 echo "        ####################################################### "
 
-echo 'export HLF_DAPP_CONFIG="/home/portainer/dapp/conf.linux.yaml"' >> ~/.bash_profile
-echo 'export HLF_DAPP_JWT_SIGN_KEY="45567f001601aacb761e13987cddc62ddd49c5b2"' >> ~/.bash_profile
+echo 'export HLF_DAPP_CONFIG="$HOME/api.dapp/conf.linux_and_wsl.yaml"' >> ~/.bash_profile
+#echo 'export HLF_DAPP_CONFIG="/home/portainer/dapp/conf.linux.yaml"' >> ~/.bash_profile
+#echo 'export HLF_DAPP_JWT_SIGN_KEY="45567f001601aacb761e13987cddc62ddd49c5b2"' >> ~/.bash_profile
 source ~/.bash_profile
 
-cd $HOME
-mkdir dapp
+#cd $HOME
+#mkdir dapp
 
-cp $HOME/api.dapp/conf.linux.yaml /home/portainer/dapp/
-cp $HOME/api.dapp/cpp.yaml /home/portainer/dapp/
+#cp $HOME/api.dapp/conf.linux.yaml /home/portainer/dapp/
+#cp $HOME/api.dapp/cpp.yaml /home/portainer/dapp/
 
 
 echo "        ####################################################### "
@@ -37,6 +38,7 @@ echo "        ####################################################### "
 cd $HOME/api.dapp
 swag init --parseDependency --parseInternal --parseDepth 1 --md docs/md_endpoints
 go mod tidy
+go mod vendor
 #go get
 
 
@@ -44,4 +46,5 @@ echo "        ####################################################### "
 echo "        #        building the solution                        # "
 echo "        ####################################################### "
 
-go build -o $HOME/go-workspace/bin/api.dapp
+go build
+#go build -o $HOME/go-workspace/bin/api.dapp

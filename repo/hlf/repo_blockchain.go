@@ -16,7 +16,7 @@ import (
 
 type RepoBlockchain interface {
 	InitLedger() ([]byte, error)
-	Get(ID string) ([]byte, error)
+	ReadAsset(ID string) ([]byte, error)
 }
 
 type repoBlockchain struct {
@@ -49,7 +49,6 @@ func NewRepoBlockchain(SvcConf *utils.SvcConfig) RepoBlockchain {
 
 // region ======== METHODS EVOTE =========================================================
 
-// Suffrage_InitLedger
 func (r *repoBlockchain) InitLedger() ([]byte, error) {
 
 	// getting components instance
@@ -60,7 +59,7 @@ func (r *repoBlockchain) InitLedger() ([]byte, error) {
 	defer gw.Close()
 
 	// Creating the initial data in the ledger
-	issuer, e := contract.SubmitTransaction(ccfuncnames.CC1InitLedger, "[]")
+	issuer, e := contract.SubmitTransaction(ccfuncnames.MYCCInitLedger, "[]")
 	if e != nil {
 		return nil, e
 	}
@@ -68,7 +67,7 @@ func (r *repoBlockchain) InitLedger() ([]byte, error) {
 	return issuer, nil
 }
 
-func (r *repoBlockchain) Get(ID string) ([]byte, error) {
+func (r *repoBlockchain) ReadAsset(ID string) ([]byte, error) {
 	// getting components instance
 	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , false)
 	if e != nil {
@@ -76,9 +75,7 @@ func (r *repoBlockchain) Get(ID string) ([]byte, error) {
 	}
 	defer gw.Close()
 
-	//strArgs, _ := jsoniter.Marshal(ID)
-	res, e := contract.EvaluateTransaction(ccfuncnames.CC1ReadAsset, string(ID))
-	//res, e := contract.SubmitTransaction(ccfuncnames.CC1ReadAsset, string(strArgs))
+	res, e := contract.EvaluateTransaction(ccfuncnames.MYCCReadAsset, ID)
 	if e != nil {
 		return nil, e
 	}
@@ -86,9 +83,6 @@ func (r *repoBlockchain) Get(ID string) ([]byte, error) {
 	return res, nil
 }
 
-// endregion =============================================================================
-
-// region ======== PRIVATE AUX ===========================================================
 
 // getSDKComponents create the instances for the main components of HLF SDK: gateway, network and contract
 //
