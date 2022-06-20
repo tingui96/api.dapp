@@ -16,6 +16,8 @@ type ISvcBlockchainTxs interface {
 	SrvInitLedger() ([]byte, *dto.Problem)
 	GetUserSvc(id string) (*dto.User, *dto.Problem)
 	ReadAssetSvc(id string) (interface{}, *dto.Problem)
+	CreateAssetSvc(asset dto.Asset) (interface{}, *dto.Problem)
+	UpdateAssetSvc(asset dto.Asset) (interface{}, *dto.Problem)
 }
 
 type svcBlockchainTxs struct {
@@ -67,3 +69,34 @@ func (s *svcBlockchainTxs) ReadAssetSvc(ID string) (interface{}, *dto.Problem) {
 
 	return m, nil
 }
+
+func (s *svcBlockchainTxs) CreateAssetSvc(asset dto.Asset) (interface{}, *dto.Problem) {
+	item, err := (*s.repo).CreateAsset(asset)
+	if err != nil {
+		return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrBuntdb, err.Error())
+	}
+
+	result := lib.DecodePayload(item)
+
+	m, ok := result.(interface{})
+	if !ok {return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrDecodePayloadTx, err.Error())}
+
+	return m, nil
+}
+
+func (s *svcBlockchainTxs) UpdateAssetSvc(asset dto.Asset) (interface{}, *dto.Problem) {
+	item, err := (*s.repo).UpdateAsset(asset)
+	if err != nil {
+		return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrBuntdb, err.Error())
+	}
+
+	result := lib.DecodePayload(item)
+
+	m, ok := result.(interface{})
+	if !ok {return nil, dto.NewProblem(iris.StatusExpectationFailed, schema.ErrDecodePayloadTx, err.Error())}
+
+	return m, nil
+}
+
+
+// FALTA el CREATEASSSET

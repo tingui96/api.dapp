@@ -16,10 +16,6 @@ organizations:
       - peer0.org1.example.com
     orderers:
       - orderer.example.com
-  Org2:
-    mspid: Org2MSP
-    peers:
-      - peer0.org2.example.com
 
 peers:
   peer0.org1.example.com:
@@ -29,13 +25,6 @@ peers:
     grpcOptions:
       ssl-target-name-override: peer0.org1.example.com
       hostnameOverride: peer0.org1.example.com
-  peer0.org2.example.com:
-    url: grpcs://127.0.0.1:7055
-    tlsCACerts:
-      path: ./crypmaterials/tlscacerts/tlsca.org2.example.com-cert.pem
-    grpcOptions:
-      ssl-target-name-override: peer0.org2.example.com
-      hostnameOverride: peer0.org2.example.com
 
 channels:
   mychannel:
@@ -47,18 +36,13 @@ channels:
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
-      peer0.org2.example.com:
-        endorsingPeer: true
-        chaincodeQuery: true
-        ledgerQuery: true
-        eventSource: true
 
 orderers:
   orderer.example.com:
     url: grpcs://127.0.0.1:7050
     grpcOptions:
-#      ssl-target-name-override: orderer.example.com
-#      hostnameOverride: orderer.example.com
-#      grpc-max-send-message-length: 50000000
+    #      ssl-target-name-override: orderer.example.com
+    #      hostnameOverride: orderer.example.com
+    #      grpc-max-send-message-length: 50000000
     tlsCACerts:
       path: ./crypmaterials/tlscacerts/tlsca.org1.example.com-cert.pem

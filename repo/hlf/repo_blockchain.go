@@ -2,8 +2,11 @@ package hlf
 
 import (
 	"errors"
+	"fmt"
 	"github.com/ic-matcom/api.dapp/schema/ccFuncNames"
+	"github.com/ic-matcom/api.dapp/schema/dto"
 	"path/filepath"
+	"strconv"
 
 	"github.com/ic-matcom/api.dapp/schema"
 	"github.com/ic-matcom/api.dapp/service/utils"
@@ -17,6 +20,8 @@ import (
 type RepoBlockchain interface {
 	InitLedger() ([]byte, error)
 	ReadAsset(ID string) ([]byte, error)
+	CreateAsset(asset dto.Asset) ([]byte, error)
+	UpdateAsset(asset dto.Asset) ([]byte, error)
 }
 
 type repoBlockchain struct {
@@ -75,6 +80,7 @@ func (r *repoBlockchain) ReadAsset(ID string) ([]byte, error) {
 	}
 	defer gw.Close()
 
+	// usar EvaluateTransaction para Tx de consultas
 	res, e := contract.EvaluateTransaction(ccfuncnames.MYCCReadAsset, ID)
 	if e != nil {
 		return nil, e
@@ -82,6 +88,47 @@ func (r *repoBlockchain) ReadAsset(ID string) ([]byte, error) {
 
 	return res, nil
 }
+
+func (r *repoBlockchain) CreateAsset(asset dto.Asset) ([]byte, error) {
+	// getting components instance
+	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , false)
+	if e != nil {
+		return nil, e
+	}
+	defer gw.Close()
+
+	fmt.Println("CreateAsset: ", asset)
+
+	// usar SubmitTransaction para Tx que modifican o crean activos
+	res, e := contract.SubmitTransaction(ccfuncnames.MYCCCreateAsset, asset.ID, asset.Color, strconv.Itoa(asset.Size), asset.Owner, strconv.Itoa(asset.AppraisedValue))
+	if e != nil {
+		return nil, e
+	}
+
+	fmt.Println("res: ", res)
+
+	return res, nil
+}
+
+func (r *repoBlockchain) UpdateAsset(asset dto.Asset) ([]byte, error) {
+	// getting components instance
+	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , false)
+	if e != nil {
+		return nil, e
+	}
+	defer gw.Close()
+
+	// usar SubmitTransaction para Tx que modifican o crean activos
+	res, e := contract.SubmitTransaction(ccfuncnames.MYCCUpdateAsset, asset.ID, asset.Color, strconv.Itoa(asset.Size), asset.Owner, strconv.Itoa(asset.AppraisedValue))
+	if e != nil {
+		return nil, e
+	}
+
+	return res, nil
+}
+
+
+// -------------------------------
 
 
 // getSDKComponents create the instances for the main components of HLF SDK: gateway, network and contract

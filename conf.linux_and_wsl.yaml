@@ -11,7 +11,7 @@ TkMaxAge: 180
 
 # HLF Network & Crypto Materials
 MspId : "Org1MSP"
-CppPath: "./cpp.org1.yaml"              # cpp = connection profile
+CppPath: "./cpp_con_una_unica_org.yaml"              # cpp = connection profile
 
 
 #CryptoMaterialsDir: "/home/portainer/dapp/crypmaterials"

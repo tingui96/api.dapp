@@ -37,6 +37,8 @@ peers:
 
 channels:
   mychannel:
+    orderers:
+      - orderer.example.com
     peers:
       peer0.org1.example.com:
         endorsingPeer: true
