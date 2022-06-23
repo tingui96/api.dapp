@@ -39,7 +39,7 @@ go install github.com/swaggo/swag/cmd/swag@v1.7.0
 
 ### Para generar la documentación, debe ejecutar:
 ```shell
-swag init --parseDependency --parseInternal --parseDepth 1 --md docs/md_endpoints
+swag init --parseDependency --parseInternal --parseDepth 1 --md ./docs/md_endpoints
 ```
 
 ### Luego debe ejecutar:
