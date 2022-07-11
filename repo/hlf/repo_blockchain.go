@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/ic-matcom/api.dapp/schema/ccFuncNames"
 	"github.com/ic-matcom/api.dapp/schema/dto"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -145,18 +146,23 @@ func (r *repoBlockchain) getSDKComponents(channel, contractName string, withAdmi
 		identityLabel = r.DappIdentityAdmin
 	}
 
+	err := os.Setenv("DISCOVERY_AS_LOCALHOST", "true")
+	if err != nil {
+		return nil, nil, nil, errors.New("error setting DISCOVERY_AS_LOCALHOST environment variable")
+	}
+
 	// trying to get an instance of HLF SDK network gateway, from the connection profile
-	gw, e := gateway.Connect( // gt = gateway
+	gw, err := gateway.Connect( // gt = gateway
 		gateway.WithConfig(config.FromFile(filepath.Clean(r.CppPath))),
 		gateway.WithIdentity(r.Wallet, identityLabel))
-	if e != nil {
-		return nil, nil, nil, e
+	if err != nil {
+		return nil, nil, nil, err
 	}
 
 	// trying to get an instance of the gateway network
-	nt, e := gw.GetNetwork(channel) // nt == network
-	if e != nil {
-		return nil, nil, nil, e
+	nt, err := gw.GetNetwork(channel) // nt == network
+	if err != nil {
+		return nil, nil, nil, err
 	}
 
 	// trying to get the contract
