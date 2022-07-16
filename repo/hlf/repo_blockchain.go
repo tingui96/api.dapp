@@ -58,7 +58,7 @@ func NewRepoBlockchain(SvcConf *utils.SvcConfig) RepoBlockchain {
 func (r *repoBlockchain) InitLedger() ([]byte, error) {
 
 	// getting components instance
-	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , true)
+	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1, true)
 	if e != nil {
 		return nil, e
 	}
@@ -75,7 +75,7 @@ func (r *repoBlockchain) InitLedger() ([]byte, error) {
 
 func (r *repoBlockchain) ReadAsset(ID string) ([]byte, error) {
 	// getting components instance
-	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , false)
+	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1, false)
 	if e != nil {
 		return nil, e
 	}
@@ -92,7 +92,7 @@ func (r *repoBlockchain) ReadAsset(ID string) ([]byte, error) {
 
 func (r *repoBlockchain) CreateAsset(asset dto.Asset) ([]byte, error) {
 	// getting components instance
-	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , false)
+	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1, false)
 	if e != nil {
 		return nil, e
 	}
@@ -101,7 +101,7 @@ func (r *repoBlockchain) CreateAsset(asset dto.Asset) ([]byte, error) {
 	fmt.Println("CreateAsset: ", asset)
 
 	// usar SubmitTransaction para Tx que modifican o crean activos
-	res, e := contract.SubmitTransaction(ccfuncnames.MYCCCreateAsset, asset.ID, asset.Color, strconv.Itoa(asset.Size), asset.Owner, strconv.Itoa(asset.AppraisedValue))
+	res, e := contract.SubmitTransaction(ccfuncnames.MYCCCreateAsset, asset.ID, asset.PatientName, asset.Description, strconv.Itoa(asset.State), asset.Group)
 	if e != nil {
 		return nil, e
 	}
@@ -113,14 +113,14 @@ func (r *repoBlockchain) CreateAsset(asset dto.Asset) ([]byte, error) {
 
 func (r *repoBlockchain) UpdateAsset(asset dto.Asset) ([]byte, error) {
 	// getting components instance
-	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1 , false)
+	gw, _, contract, e := r.getSDKComponents(r.ChannelName, ccfuncnames.ContractNameCC1, false)
 	if e != nil {
 		return nil, e
 	}
 	defer gw.Close()
 
 	// usar SubmitTransaction para Tx que modifican o crean activos
-	res, e := contract.SubmitTransaction(ccfuncnames.MYCCUpdateAsset, asset.ID, asset.Color, strconv.Itoa(asset.Size), asset.Owner, strconv.Itoa(asset.AppraisedValue))
+	res, e := contract.SubmitTransaction(ccfuncnames.MYCCUpdateAsset, asset.ID, asset.PatientName, asset.Description, strconv.Itoa(asset.State), asset.Group)
 	if e != nil {
 		return nil, e
 	}
@@ -128,9 +128,7 @@ func (r *repoBlockchain) UpdateAsset(asset dto.Asset) ([]byte, error) {
 	return res, nil
 }
 
-
 // -------------------------------
-
 
 // getSDKComponents create the instances for the main components of HLF SDK: gateway, network and contract
 //

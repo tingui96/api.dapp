@@ -2,7 +2,7 @@
 Debug: true
 # Backend Ip to expose the swagger api documentation
 # si vas a ejecutar en la MV del optativo, entonces debes usar la IP de la MV (ejemplo: 192.168.49.133)
-ApiDocIp: 127.0.0.1
+ApiDocIp: 172.16.75.128
 # The port this dapp will be running on
 DappPort: 7001
 

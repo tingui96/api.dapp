@@ -12,9 +12,9 @@ type GetRequest struct {
 
 // asset de chaincode-go
 type Asset struct {
-	AppraisedValue int    `json:"AppraisedValue"`
-	Color          string `json:"Color"`
-	ID             string `json:"ID"`
-	Owner          string `json:"Owner"`
-	Size           int    `json:"Size"`
+	ID          string `json:"ID"`
+	PatientName string `json:"PatientName"`
+	Description string `json:"Description"`
+	State       int    `json:"State"`
+	Group       string `json:"Group"`
 }

@@ -124,7 +124,7 @@ func (h HBlockchainTxs) ReadAsset(ctx iris.Context) {
 }
 
 // UpdateAsset updates an existing asset in the world state with provided parameters.
-// @Summary updates an existing asset in the world state with provided parameters.
+// @Summary cambia el estado de otra organizacion.
 // @Tags Txs.mycc
 // @Security ApiKeyAuth
 // @Accept  json

@@ -9,5 +9,5 @@ const (
 )
 
 const (
-	ContractNameCC1 = "mycc"
+	ContractNameCC1 = "medicalregisters"
 )
